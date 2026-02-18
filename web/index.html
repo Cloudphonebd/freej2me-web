@@ -77,7 +77,29 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
-      }
+      }.main-footer {
+    background-color: var(--primary-dark);
+    color: #ffffff;
+    padding: 20px 10px;
+    margin-top: 30px;
+    text-align: center;
+    border-top: 2px solid var(--secondary-dark);
+    font-family: sans-serif;
+}
+
+.footer-container p {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+}
+
+.footer-container strong {
+    color: var(--warning-color);
+}
+
+.copyright {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
 
       .data-controls {
         display: flex;
@@ -731,7 +753,12 @@
         </table>
       </div>
       <br /><br />
-    </main>
+    </main><footer class="main-footer">
+    <div class="footer-container">
+        <p>Developed & Owned By <strong>Cloud Phone BD</strong></p>
+        <span class="copyright">&copy; 2026 Freej2me-web. All rights reserved.</span>
+    </div>
+    </footer>
     <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
     <script type="module" src="src/launcher.js"></script>
   </body>

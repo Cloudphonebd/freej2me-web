@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>J2ME Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* J2ME Online হেডার */
+        .j2me-header {
+            font-size: 42px;
+            font-weight: 800;
+            color: #000;
+            text-align: left;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        /* মেনু বাটন */
+        .menu-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .menu-line {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #333;
+            margin-right: 15px;
+        }
+
+        .menu-text {
+            font-size: 28px;
+            font-weight: 600;
+            color: #000;
+            padding: 5px 15px;
+            border: 2px solid #000;
+            border-radius: 8px;
+        }
+
+        /* Installed Games হেডার */
+        .installed-header {
+            font-size: 28px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+
+        /* গেম লিস্ট */
+        .game-list {
+            margin-bottom: 25px;
+        }
+
+        .game-item {
+            font-size: 26px;
+            font-weight: 500;
+            color: #000;
+            padding: 8px 0;
+            margin-left: 10px;
+        }
+
+        /* Add New Game লিংক */
+        .add-game {
+            font-size: 26px;
+            font-weight: 500;
+            color: #000;
+            margin-top: 10px;
+            margin-left: 10px;
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            padding-bottom: 3px;
+        }
+
+        /* ফুটার */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #4a6cb3, #365291);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+
+        .footer strong {
+            color: #ffcc00;
+        }
+
+        .copyright {
+            font-size: 14px;
+            margin-top: 8px;
+            opacity: 0.9;
+        }
+
+        /* ছোট স্ক্রিনের জন্য */
+        @media (max-width: 400px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .j2me-header {
+                font-size: 36px;
+            }
+            
+            .menu-text {
+                font-size: 24px;
+            }
+            
+            .installed-header {
+                font-size: 24px;
+            }
+            
+            .game-item {
+                font-size: 22px;
+            }
+            
+            .add-game {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- J2ME Online (JAVA EMUL এর বদলে) -->
+        <div class="j2me-header">J2ME Online</div>
+        
+        <!-- Menu লাইন এবং বাটন -->
+        <div class="menu-section">
+            <div class="menu-line"></div>
+            <span class="menu-text">Menu</span>
+        </div>
+        
+        <!-- Installed Games -->
+        <div class="installed-header">Installed Games</div>
+        
+        <!-- গেম লিস্ট -->
+        <div class="game-list">
+            <div class="game-item">k4kuro</div>
+            <div class="game-item">Connect4</div>
+        </div>
+        
+        <!-- Add New Game -->
+        <div class="add-game">Add New Game</div>
+        
+        <!-- ফুটার -->
+        <div class="footer">
+            <div>Developed & Owned By <strong>Cloud Phone BD</strong></div>
+            <div class="copyright">© 2026 Freej2me-web. All rights reserved.</div>
+        </div>
+    </div>
+
+    <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
+    <script type="module" src="src/launcher.js"></script>
+</body>
+</html>

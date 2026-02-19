@@ -7,7 +7,39 @@
   </head>
 
   <body>
-    <style>
+    <style>.main-footer {
+    background-color: var(--primary-dark); /* আপনার কোডের ভেরিয়েবল অনুযায়ী */
+    color: #ffffff;
+    padding: 25px 0;
+    margin-top: 50px;
+    text-align: center;
+    border-top: 3px solid var(--secondary-dark);
+    font-family: sans-serif;
+}
+
+.footer-container p {
+    margin: 0;
+    font-size: 1.1em;
+    letter-spacing: 0.5px;
+}
+
+.footer-container strong {
+    color: var(--warning-color); /* আপনার কোডের হলুদ/অরেঞ্জ কালারটি ব্যবহার হবে */
+    font-weight: 600;
+}
+
+.footer-links {
+    margin-top: 10px;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+
+/* মোবাইল রেসপনসিভনেস */
+@media (max-width: 480px) {
+    .main-footer {
+        padding: 20px 10px;
+    }
+}
       html,
       body {
         height: 100%;

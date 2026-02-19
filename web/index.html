@@ -6,20 +6,35 @@
     <title>freej2me-web</title>
   </head>
 
-  <body>
-    <button:disabled, .game-item button {
-    opacity: 1 !important;
-    background-color: #4a6cb3 !important;
+  <body><style>
+:root {
+    --primary-main: #4a6cb3;
+    --primary-dark: #365291;
+}
+
+/* ম্যানেজ বাটন সরাসরি ঠিক করার জন্য */
+.game-item button, 
+button:disabled {
+    background-color: var(--primary-main) !important;
     color: white !important;
+    opacity: 1 !important;
     cursor: pointer !important;
-}>
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.game-item button:hover {
+    background-color: var(--primary-dark) !important;
+}
+
 body {
-    background-color: #f0f2f5; /* আরামদায়ক হালকা গ্রে */
+    background-color: #f0f2f5;
     font-family: 'Segoe UI', Roboto, sans-serif;
     color: #333;
 }
 
-/* মেইন কন্টেনারকে কার্ড স্টাইল করা */
 main {
     background: #ffffff;
     border-radius: 16px;
@@ -28,49 +43,16 @@ main {
     margin-top: 20px;
 }
 
-/* বাটনগুলোকে আধুনিক করা */
-button, .data-controls button {
-    background-color: #4a6cb3;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-button:hover {
-    background-color: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-
-/* গেম লিস্ট বা কার্ড স্টাইল */
 .game-item {
-    background: #f0f4f8;
+    background: #f8f9fa;
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 10px;
     display: flex;
+    justify-content: space-between; /* এটি বাটনকে ডানে ঠেলে দেবে */
     align-items: center;
     border: 1px solid #eee;
 }
-
-/* কীবোর্ড কী (Keys) গুলোর ডিজাইন */
-.key {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 2px 8px;
-    font-family: monospace;
-    box-shadow: 0 2px 0 #bbb;
-    font-weight: bold;
-    color: var(--primary-dark);
-}
-
-/* টেবিল ডিজাইন */
-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;

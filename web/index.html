@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>freej2me-web</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-main: #4a6cb3;
+            --primary-dark: #365291;
+            --secondary: #6fc276;
+            --warning: #ffcc00;
+            --danger: #e74c3c;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* লোডিং ওভারলে - ইমেজের মত দেখতে */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .loading-subtext {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* লোডিং হাইড ক্লাস */
+        #loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 2.4 ইঞ্চি ডিসপ্লের জন্য অপ্টিমাইজড */
+        main {
+            max-width: 320px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 12px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            flex: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        main.visible {
+            opacity: 1;
+        }
+
+        /* হেডার সেকশন */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-main);
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            letter-spacing: -0.3px;
+        }
+
+        .data-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--primary-main);
+            color: white;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1.5px solid var(--primary-main);
+            color: var(--primary-main);
+        }
+
+        .btn-outline:active {
+            background-color: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-main);
+            color: white;
+        }
+
+        .btn-primary:active {
+            background-color: var(--primary-dark);
+        }
+
+        /* গেম লিস্ট */
+        h2 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .game-list {
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .game-item {
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .game-item:last-child {
+            border-bottom: none;
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .game-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .game-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .game-name small {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-left: 4px;
+        }
+
+        .game-item button {
+            background-color: var(--primary-main);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 60px;
+        }
+
+        .game-item button:active {
+            background-color: var(--primary-dark);
+        }
+
+        /* অ্যাড গেম সেকশন */
+        .add-edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 10px;
+        }
+
+        .add-edit-header h2 {
+            margin: 0;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* ফাইল ইনপুট */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1.5px dashed var(--primary-main);
+            border-radius: var(--border-radius-sm);
+            font-size: 0.75rem;
+            background: var(--bg-color);
+        }
+
+        /* ওয়ার্নিং মেসেজ */
+        .warning-message {
+            background-color: rgba(255, 204, 0, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 10px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 12px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* প্রিভিউ কন্টেইনার */
+        .preview-container {
+            display: flex;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 16px;
+            gap: 10px;
+        }
+
+        .preview-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--secondary), #45a049);
+            border-radius: 8px;
+        }
+
+        .preview-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .manage-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .control-button {
+            padding: 5px 8px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.65rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .warning-button {
+            background-color: var(--warning);
+            color: #333;
+        }
+
+        .danger-button {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        /* সেটিংস গ্রিড */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .settings-grid select,
+        .settings-grid input {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.7rem;
+        }
+
+        .settings-grid label {
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .custom-size-inputs {
+            display: flex;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .custom-size-inputs input {
+            width: 50%;
+        }
+
+        /* চেকবক্স স্টাইল */
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+        }
+
+        .checkbox input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* অ্যাডভান্স সেটিংস */
+        .advanced-settings {
+            margin-top: 10px;
+        }
+
+        .advanced-settings summary {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--primary-main);
+            cursor: pointer;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.7rem;
+            resize: vertical;
+            min-height: 50px;
+        }
+
+        /* সেভ বাটন */
+        .save-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 16px 0;
+        }
+
+        .save-button:active {
+            opacity: 0.9;
+        }
+
+        /* কি-বোর্ড কন্ট্রোল */
+        .keyboard-controls {
+            background: var(--bg-color);
+            padding: 12px;
+            border-radius: var(--border-radius-md);
+            margin-top: 16px;
+        }
+
+        .keyboard-controls h3 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+        }
+
+        .keyboard-controls table {
+            width: 100%;
+            font-size: 0.7rem;
+        }
+
+        .keyboard-controls td {
+            padding: 4px;
+        }
+
+        .key {
+            background-color: var(--card-bg);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 0.65rem;
+            white-space: nowrap;
+        }
+
+        /* ফুটার - ইমেজের মত দেখতে */
+        .main-footer {
+            background: linear-gradient(135deg, var(--primary-main), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            margin-top: 20px;
+            border-radius: var(--border-radius-md);
+            font-size: 0.9rem;
+        }
+
+        .main-footer strong {
+            color: var(--warning);
+            font-weight: 700;
+        }
+
+        .copyright {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        /* হেল্পার ক্লাস */
+        .hidden {
+            display: none !important;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* 2.4 ইঞ্চি ডিসপ্লের জন্য স্পেসিফিক অ্যাডজাস্টমেন্ট */
+        @media (max-width: 320px) {
+            main {
+                padding: 8px;
+            }
+            
+            .game-item {
+                padding: 8px 10px;
+            }
+            
+            .btn {
+                padding: 5px 8px;
+                min-width: 50px;
+            }
+
+            .main-footer {
+                padding: 15px 8px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- লোডিং ওভারলে - ইমেজের মত ডিজাইন -->
+    <div id="loading">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading...</div>
+            <div class="loading-subtext">freej2me-web</div>
+        </div>
+    </div>
+
+    <main id="main">
+        <!-- হেডার সেকশন -->
+        <div class="header">
+            <h1>📱 freej2me</h1>
+            <div class="data-controls">
+                <button class="btn btn-outline" id="import-data-btn">📥</button>
+                <input type="file" id="import-data-file" style="display: none;" accept=".zip">
+                <button class="btn btn-outline" id="export-data-btn">📤</button>
+                <a id="export-data-link" style="display: none;" download="freej2me-data.zip"></a>
+            </div>
+        </div>
+
+        <!-- ইনস্টল করা গেমস -->
+        <h2>📋 Installed Games</h2>
+        <div id="game-list" class="game-list">
+            <div class="game-item">
+                <div class="game-info">
+                    <div class="game-icon">🎮</div>
+                    <span class="game-name">k4kur0 <small>v1.0</small></span>
+                </div>
+                <button>Manage</button>
+            </div>
+            <div class="game-item">
+                <div class="game-info">
+                    <div class="game-icon">🕹️</div>
+                    <span class="game-name">Connect4 <small>v2.1</small></span>
+                </div>
+                <button>Manage</button>
+            </div>
+            <div class="game-item">
+                <div class="game-info">
+                    <div class="game-icon">📘</div>
+                    <span class="game-name">Facebook Lite <small>v1.0</small></span>
+                </div>
+                <button>Manage</button>
+            </div>
+        </div>
+
+        <!-- অ্যাড নিউ গেম হেডার -->
+        <div class="add-edit-header">
+            <h2>➕ Add New Game</h2>
+            <button id="clear-current" class="btn btn-outline">Clear</button>
+        </div>
+
+        <!-- ফাইল ইনপুট স্টেপ -->
+        <div id="file-input-step">
+            <div class="form-group">
+                <label for="game-file-input">📦 Select JAR file</label>
+                <input type="file" id="game-file-input" accept=".jar">
+            </div>
+        </div>
+
+        <!-- JAD ফাইল স্টেপ -->
+        <div id="file-input-jad-step" style="display: none;">
+            <div id="warning-message" class="warning-message">
+                <span>⚠️</span>
+                <span>JAD file required for this game</span>
+            </div>
+            <div class="form-group">
+                <label for="upload-descriptor-file-input">📄 Select JAD file</label>
+                <input type="file" id="upload-descriptor-file-input" accept=".jad">
+            </div>
+            <div class="form-group">
+                <button id="continue-without-jad" class="btn btn-outline btn-full">
+                    Continue without JAD
+                </button>
+            </div>
+        </div>
+
+        <!-- লোডিং স্টেট -->
+        <div class="loading" id="file-input-loading" style="display: none;">
+            <div class="spinner"></div>
+            <span>Analyzing file...</span>
+        </div>
+
+        <!-- অ্যাড/ম্যানেজ স্টেপ -->
+        <div id="add-manage-step" style="display: none;">
+            <div id="preview" class="preview-container">
+                <div class="preview-icon"></div>
+                <span class="preview-name">Game Name</span>
+                <div id="preview-controls" class="manage-controls">
+                    <button id="wipe-data-btn" class="control-button warning-button">🗑️</button>
+                    <button id="uninstall-btn" class="control-button danger-button">❌</button>
+                </div>
+            </div>
+
+            <div id="edit-settings-container" class="settings-container">
+                <div class="aux-file-upload">
+                    <div class="aux-file-upload-btn">📎 Upload JAD file</div>
+                    <input type="file" id="aux-jad-file-input" accept=".jad">
+                </div>
+
+                <div class="settings-grid">
+                    <div class="form-group">
+                        <label for="phoneType">Phone:</label>
+                        <select id="phoneType">
+                            <option value="Standard">Standard</option>
+                            <option value="Nokia">Nokia</option>
+                            <option value="Motorola">Motorola</option>
+                            <option value="SonyEricsson">SonyEricsson</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="screenSize">Screen:</label>
+                        <select id="screenSize">
+                            <option value="128x128">128x128</option>
+                            <option value="128x160">128x160</option>
+                            <option value="176x208">176x208</option>
+                            <option value="240x320">240x320</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                        <div class="custom-size-inputs" id="edit-custom-size-inputs">
+                            <input type="number" placeholder="W" id="customWidth" min="1" value="240">
+                            <input type="number" placeholder="H" id="customHeight" min="1" value="320">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fontSize">Font:</label>
+                        <select id="fontSize">
+                            <option value="0">Dynamic</option>
+                            <option value="1">Small</option>
+                            <option value="2">Medium</option>
+                        </select>
+                    </div>
+
+                    <label class="checkbox">
+                        <input type="checkbox" name="enableSound" checked> Sound
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" name="rotate"> Rotate
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" name="forceFullscreen"> Fullscreen
+                    </label>
+                </div>
+
+                <details class="advanced-settings">
+                    <summary>⚙️ Advanced Settings</summary>
+                    <div class="form-group">
+                        <label for="editAppProps">App Properties:</label>
+                        <textarea id="editAppProps" placeholder="key: value"></textarea>
+                    </div>
+                </details>
+            </div>
+
+            <button class="save-button" id="add-save-button">📲 Install Game</button>
+        </div>
+
+        <!-- কিবোর্ড কন্ট্রোল গাইড -->
+        <div class="keyboard-controls">
+            <h3>⌨️ Controls</h3>
+            <table>
+                <tr><td><span class="key">Esc</span></td><td>Options menu</td></tr>
+                <tr><td><span class="key">F1/Q</span></td><td>Left soft key</td></tr>
+                <tr><td><span class="key">F2/W</span></td><td>Right soft key</td></tr>
+                <tr><td><span class="key">0-9</span></td><td>Number keys</td></tr>
+                <tr><td><span class="key">E</span></td><td>* key</td></tr>
+                <tr><td><span class="key">R</span></td><td># key</td></tr>
+                <tr><td><span class="key">↑↓←→</span></td><td>Navigation</td></tr>
+                <tr><td><span class="key">Enter</span></td><td>OK button</td></tr>
+            </table>
+        </div>
+    </main>
+
+    <!-- ফুটার - আপনার ইমেজের মত -->
+    <div class="main-footer">
+        <div>Developed & Owned By <strong>Cloud Phone BD</strong></div>
+        <div class="copyright">© 2026 Freej2me-web. All rights reserved.</div>
+    </div>
+
+    <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
+    <script type="module" src="src/launcher.js"></script>
+    
+    <!-- লোডিং ফিক্স করার জন্য স্ক্রিপ্ট -->
+    <script>
+        // ডকুমেন্ট লোড হওয়ার পর লোডিং হাইড করবে
+        document.addEventListener('DOMContentLoaded', function() {
+            // ১ সেকেন্ড পরে লোডিং হাইড করবে (যদি launcher.js লোড হতে দেরি হয়)
+            setTimeout(function() {
+                const loading = document.getElementById('loading');
+                const main = document.getElementById('main');
+                
+                if (loading) {
+                    loading.classList.add('hidden');
+                }
+                
+                if (main) {
+                    main.classList.add('visible');
+                }
+            }, 1500); // ১.৫ সেকেন্ড
+        });
+
+        // launcher.js লোড হওয়ার পর যদি লোডিং হাইড করার ফাংশন থাকে
+        window.hideLoading = function() {
+            const loading = document.getElementById('loading');
+            const main = document.getElementById('main');
+            
+            if (loading) {
+                loading.classList.add('hidden');
+            }
+            
+            if (main) {
+                main.classList.add('visible');
+            }
+        };
+
+        // যদি launcher.js লোড হতে ব্যর্থ হয়, তাহলেও লোডিং হাইড হবে
+        window.addEventListener('load', function() {
+            // ৩ সেকেন্ড পরে নিশ্চিতভাবে লোডিং হাইড করবে
+            setTimeout(function() {
+                const loading = document.getElementById('loading');
+                const main = document.getElementById('main');
+                
+                if (loading && !loading.classList.contains('hidden')) {
+                    loading.classList.add('hidden');
+                }
+                
+                if (main && !main.classList.contains('visible')) {
+                    main.classList.add('visible');
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
